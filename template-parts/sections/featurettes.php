@@ -1,93 +1,133 @@
 <?php
 /**
+ * Section Name: Featurettes (Texto e Imagen)
  * Template part for displaying the "Featurettes" section.
  *
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
  *
  * @package Boots_Hard
  */
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
+// Datos pasados desde section-renderer.php
+$section_data_from_json = isset( $args['section_data_from_json'] ) && is_array( $args['section_data_from_json'] ) ? $args['section_data_from_json'] : array();
 
 // Datos por defecto para la sección de featurettes
-$default_featurettes_data = array(
-	array(
-		'title'             => __( 'Primera Featurette Destacada.', 'boots-hard' ),
-		'subtitle_muted'    => __( 'Te sorprenderá.', 'boots-hard' ),
-		'description'       => __( 'Contenido placeholder genial para la primera featurette. Imagina una prosa emocionante aquí.', 'boots-hard' ),
-		'svg_text'          => '500x500',
-		'svg_alt'           => __( 'Placeholder: 500x500', 'boots-hard' ),
-		'text_order_class'  => '', // Default: texto a la izquierda, imagen a la derecha
-		'image_order_class' => '',
-	),
-	array(
-		'title'             => __( 'Oh sí, es así de bueno.', 'boots-hard' ),
-		'subtitle_muted'    => __( 'Compruébalo tú mismo.', 'boots-hard' ),
-		'description'       => __( '¿Otra featurette? Por supuesto. Más contenido placeholder para darte una idea de cómo funcionaría este diseño con contenido real.', 'boots-hard' ),
-		'svg_text'          => '500x500',
-		'svg_alt'           => __( 'Placeholder: 500x500', 'boots-hard' ),
-		'text_order_class'  => 'order-md-2', // Texto a la derecha
-		'image_order_class' => 'order-md-1', // Imagen a la izquierda
-	),
-	array(
-		'title'             => __( 'Y una más, para completar.', 'boots-hard' ),
-		'subtitle_muted'    => __( 'Simplemente increíble.', 'boots-hard' ),
-		'description'       => __( 'Esta es la última featurette de ejemplo, demostrando la flexibilidad y facilidad de uso de este componente.', 'boots-hard' ),
-		'svg_text'          => '500x500',
-		'svg_alt'           => __( 'Placeholder: 500x500', 'boots-hard' ),
-		'text_order_class'  => '', // Default: texto a la izquierda, imagen a la derecha
-		'image_order_class' => '',
-	),
+$defaults = array(
+	'section_title' => __( 'Nuestras Características', 'boots-hard' ), // Título opcional para la sección completa
+	'featurettes'   => array(
+		array(
+			'title'             => __( 'Primera Featurette por Defecto.', 'boots-hard' ),
+			'subtitle_muted'    => __( 'Subtítulo por defecto.', 'boots-hard' ),
+			'description'       => __( 'Descripción por defecto para la primera featurette. Adapta este contenido.', 'boots-hard' ),
+			'image_id'          => 0, // ID del adjunto
+			'image_alt'         => __( 'Imagen Placeholder 500x500', 'boots-hard' ),
+			'text_order_class'  => '',
+			'image_order_class' => '',
+			'image_url_fallback_for_default' => 'https://via.placeholder.com/500x500.png?text=Placeholder+500x500' // Solo para el default PHP
+		),
+		array(
+			'title'             => __( 'Segunda Featurette por Defecto.', 'boots-hard' ),
+			'subtitle_muted'    => __( 'Otro subtítulo.', 'boots-hard' ),
+			'description'       => __( 'Más contenido de ejemplo para la segunda featurette. Personaliza según tus necesidades.', 'boots-hard' ),
+			'image_id'          => 0,
+			'image_alt'         => __( 'Imagen Placeholder 500x500', 'boots-hard' ),
+			'text_order_class'  => 'order-md-2',
+			'image_order_class' => 'order-md-1',
+			'image_url_fallback_for_default' => 'https://via.placeholder.com/500x500.png?text=Placeholder+500x500' // Solo para el default PHP
+		),
+	)
 );
 
-// En un futuro, podrías cargar estos datos desde el Personalizador de WordPress
-// $customizer_data = get_theme_mod( 'featurettes_section_data', array() );
-// $featurettes_data = ! empty( $customizer_data ) ? $customizer_data : $default_featurettes_data;
-$featurettes_data              = $default_featurettes_data;
+// Fusionar datos del JSON con los por defecto
+$section_content = wp_parse_args( $section_data_from_json, $defaults );
+
+// Asegurarse de que 'featurettes' sea un array
+if ( ! is_array( $section_content['featurettes'] ) ) {
+	$section_content['featurettes'] = $defaults['featurettes'];
+}
+
 $section_spacing_class          = get_theme_mod( 'bh_section_spacing_class', 'py-3' );
 $section_inner_container_class = get_theme_mod( 'bh_section_inner_container_class', 'container' );
 
-if ( ! empty( $featurettes_data ) && is_array( $featurettes_data ) ) : ?>
-<section id="featurettes-section" class="bh-theme-section <?php echo esc_attr( $section_spacing_class ); ?>">
+// Slug de esta sección (nombre del archivo sin .php)
+$section_slug = basename( __FILE__, '.php' );
+
+if ( ! empty( $section_content['featurettes'] ) ) : ?>
+<section id="section-preview-<?php echo esc_attr( $section_slug ); ?>" class="bh-managed-section <?php echo esc_attr( $section_slug ); ?> bh-theme-section <?php echo esc_attr( $section_spacing_class ); ?>">
 	<div class="<?php echo esc_attr( $section_inner_container_class ); ?>">
 
-		<?php foreach ( $featurettes_data as $index => $featurette_item ) : ?>
-			<?php
-			// Asegurarse de que los datos esperados existen y sanitizarlos/escaparlos
-			$title             = isset( $featurette_item['title'] ) ? esc_html( $featurette_item['title'] ) : '';
-			$subtitle_muted    = isset( $featurette_item['subtitle_muted'] ) ? esc_html( $featurette_item['subtitle_muted'] ) : '';
-			$description       = isset( $featurette_item['description'] ) ? esc_html( $featurette_item['description'] ) : '';
-			$svg_text          = isset( $featurette_item['svg_text'] ) ? esc_html( $featurette_item['svg_text'] ) : '500x500';
-			$svg_alt           = isset( $featurette_item['svg_alt'] ) ? esc_attr( $featurette_item['svg_alt'] ) : 'Placeholder';
-			$text_order_class  = isset( $featurette_item['text_order_class'] ) ? sanitize_html_class( $featurette_item['text_order_class'] ) : '';
-			$image_order_class = isset( $featurette_item['image_order_class'] ) ? sanitize_html_class( $featurette_item['image_order_class'] ) : '';
-			?>
-
-			<hr class="featurette-divider">
-
-			<div class="row featurette">
-				<div class="col-md-7 <?php echo $text_order_class; ?>">
-					<h2 class="featurette-heading fw-normal lh-1">
-						<?php echo $title; ?>
-						<?php if ( ! empty( $subtitle_muted ) ) : ?>
-							<span class="text-body-secondary"><?php echo $subtitle_muted; ?></span>
-						<?php endif; ?>
-					</h2>
-					<p class="lead"><?php echo $description; ?></p>
-				</div>
-				<div class="col-md-5 <?php echo $image_order_class; ?>">
-					<svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="<?php echo $svg_alt; ?>" preserveAspectRatio="xMidYMid slice" focusable="false">
-						<title><?php echo esc_html( $svg_alt ); // O un título más genérico como 'Placeholder' ?></title>
-						<rect width="100%" height="100%" fill="var(--bs-secondary-bg)"/>
-						<text x="50%" y="50%" fill="var(--bs-secondary-color)" dy=".3em"><?php echo $svg_text; ?></text>
-					</svg>
+		<?php if ( ! empty( $section_content['section_title'] ) ) : ?>
+			<div class="row mb-4">
+				<div class="col-12 text-center">
+					<h2 class="pb-2 border-bottom bh-preview-title"><?php echo esc_html( $section_content['section_title'] ); ?></h2>
 				</div>
 			</div>
-		<?php endforeach; ?>
+		<?php endif; ?>
 
-		<?php // Si quieres un <hr> final, puedes añadirlo aquí, aunque el ejemplo de Bootstrap no lo tiene después del último. ?>
-		<!-- <hr class="featurette-divider"> -->
+		<div class="bh-preview-featurettes-container"> <?php // Contenedor añadido ?>
+			<?php foreach ( $section_content['featurettes'] as $index => $featurette_item_raw ) : ?>
+				<?php
+				// Fusionar cada featurette con los valores por defecto de una featurette para asegurar que todas las claves existan
+				$featurette_item_defaults = isset( $defaults['featurettes'][0] ) ? $defaults['featurettes'][0] : array();
+				$featurette_item          = wp_parse_args( $featurette_item_raw, $featurette_item_defaults );
+
+				$title             = esc_html( $featurette_item['title'] );
+				$subtitle_muted    = esc_html( $featurette_item['subtitle_muted'] );
+				$description       = wp_kses_post( $featurette_item['description'] ); // Permite HTML básico
+				$image_alt         = esc_attr( $featurette_item['image_alt'] );
+				$image_url         = '';
+
+				if ( ! empty( $featurette_item['image_id'] ) ) {
+					$image_attributes = wp_get_attachment_image_src( (int) $featurette_item['image_id'], 'large' ); // O 'full', o un tamaño personalizado
+					if ( $image_attributes ) {
+						$image_url = $image_attributes[0];
+					}
+				} elseif ( ! empty( $featurette_item['image_url_fallback_for_default'] ) ) {
+					// Usar el fallback solo si no hay image_id y es parte de los defaults del PHP
+					$image_url = esc_url( $featurette_item['image_url_fallback_for_default'] );
+				}
+
+				$text_order_class  = sanitize_html_class( $featurette_item['text_order_class'] );
+				$image_order_class = sanitize_html_class( $featurette_item['image_order_class'] );
+
+				// Añadir un separador antes de cada featurette excepto la primera.
+				if ( $index > 0 ) {
+					echo '<hr class="featurette-divider">';
+				}
+				?>
+
+				<div class="row featurette bh-preview-featurette-item" data-featurette-index="<?php echo esc_attr($index); ?>"> <?php // Clase y data-attribute añadidos ?>
+					<div class="col-md-7 <?php echo $text_order_class; ?>">
+						<h2 class="featurette-heading fw-normal lh-1 bh-preview-featurette-title">
+							<?php echo $title; ?>
+							<?php if ( ! empty( $subtitle_muted ) ) : ?>
+								<span class="text-body-secondary bh-preview-featurette-subtitle"><?php echo $subtitle_muted; ?></span>
+							<?php endif; ?>
+						</h2>
+						<p class="lead bh-preview-featurette-text"><?php echo $description; ?></p>
+					</div>
+					<div class="col-md-5 <?php echo $image_order_class; ?>">
+						<?php if ( ! empty( $image_url ) ) : ?>
+							<img class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto bh-preview-featurette-image" width="500" height="500" src="<?php echo esc_url( $image_url ); ?>" alt="<?php echo $image_alt; ?>" role="img" style="object-fit: cover;">
+						<?php else : // Fallback a un SVG si no hay image_url, aunque el default ya provee una. ?>
+							<svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="<?php echo $image_alt; ?>" preserveAspectRatio="xMidYMid slice" focusable="false">
+								<title><?php echo esc_html( $image_alt ); ?></title>
+								<rect width="100%" height="100%" fill="var(--bs-secondary-bg)"/>
+								<text x="50%" y="50%" fill="var(--bs-secondary-color)" dy=".3em">500x500</text>
+							</svg>
+						<?php endif; ?>
+					</div>
+				</div>
+			<?php endforeach; ?>
+		</div> <?php // Cierre de bh-preview-featurettes-container ?>
+
+		<hr class="featurette-divider">
 
 	</div><!-- /.container -->
 </section>
 <?php
-endif; // Fin de if ! empty( $featurettes_data )
+endif; // Fin de if ! empty( $section_content['featurettes'] )
 ?>

@@ -16,9 +16,10 @@ get_header(); ?>
 
 	<main id="primary" class="site-main">
 		<?php
-			get_template_part( 'template-parts/sections/elements-bootstraps' );
-			get_template_part( 'template-parts/sections/feature-custom-cards' );
-			get_template_part( 'template-parts/sections/featurettes' );
+			// Llama a la función que renderiza las secciones gestionadas
+			if ( function_exists( 'boots_hard_display_managed_sections' ) ) {
+				boots_hard_display_managed_sections();
+			}
 		?>
 	</main>
 

@@ -1,0 +1,81 @@
+/**
+ * Boots Hard Theme: Customizer Section Manager Controls CSS
+ */
+
+.boots-hard-section-manager-container .boots-hard-sections-sortable {
+    border: 1px solid #ccd0d4;
+    background-color: #fff;
+    margin-top: 10px;
+    padding: 0;
+    list-style: none;
+}
+
+.boots-hard-section-item {
+    border-bottom: 1px solid #eee;
+    padding: 10px;
+    background-color: #fdfdfd;
+    cursor: default; /* Cambiar a 'move' o 'grab' si el handle es toda la cabecera */
+}
+
+.boots-hard-section-item:last-child {
+    border-bottom: none;
+}
+
+.boots-hard-section-item .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.boots-hard-section-item .handle {
+    cursor: move;
+    color: #72777c;
+    margin-right: 8px;
+    font-size: 18px; /* Hacer el icono un poco más grande */
+    line-height: 1;
+}
+
+.boots-hard-section-item .section-name {
+    flex-grow: 1;
+    font-weight: 600;
+}
+
+.boots-hard-section-item .section-actions .button-link {
+    margin-left: 5px;
+    text-decoration: none;
+    color: #50575e;
+}
+
+.boots-hard-section-item .section-actions .button-link .dashicons {
+    font-size: 18px;
+    vertical-align: middle;
+}
+
+.boots-hard-section-item .section-options {
+    background-color: #f9f9f9;
+    border-top: 1px dashed #ddd;
+    margin-top: 10px;
+    padding: 15px;
+}
+
+.boots-hard-section-item .section-options p {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.boots-hard-section-item .section-json-textarea {
+    font-family: Consolas, Monaco, monospace;
+    font-size: 12px;
+    line-height: 1.4;
+    white-space: pre; /* Para que respete los espacios y saltos de línea del JSON formateado */
+    overflow-wrap: normal; /* Evitar que el texto largo rompa el layout */
+    overflow-x: auto; /* Scroll horizontal si el JSON es muy ancho */
+}
+
+.ui-sortable-placeholder { /* Estilo para el placeholder mientras se arrastra */
+    border: 1px dashed #b4b9be;
+    background: #f1f1f1;
+    height: 40px; /* Ajustar a la altura aproximada de un ítem */
+    margin-bottom: 5px;
+    visibility: visible !important; /* Asegurar que sea visible */
+}

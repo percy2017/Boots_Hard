@@ -65,3 +65,12 @@ add_action( 'widgets_init', 'boots_hard_widgets_init' );
 require get_template_directory() . '/inc/class-bootstrap-navwalker.php';
 
 require get_template_directory() . '/inc/customizer.php';
+
+/**
+ * Load Customizer Section Manager.
+ */
+require get_template_directory() . '/inc/customizer-section-manager.php';
+/**
+ * Load Section Renderer for front-end display.
+ */
+require get_template_directory() . '/inc/section-renderer.php';
